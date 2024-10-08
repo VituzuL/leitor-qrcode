@@ -93,7 +93,7 @@ const App = () => {
         <img src={gmeLogo} alt="GME Logo" className="gme-logo" />
       </header>
 
-      <h1>QR Code Scanner com HTML5</h1>
+      <h1>Inventário Margarina</h1>
 
       {/* Tipo de Material e Contagem */}
       <div>
