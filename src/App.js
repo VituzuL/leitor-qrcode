@@ -82,7 +82,7 @@ const App = () => {
     } else {
       alert("Por favor, leia um QR Code antes de salvar.");
     }
-};
+  };
 
   const exportToTxt = () => {
     const jsonData = JSON.stringify({ list, elapsedTime: `${elapsedTime} minutos` }, null, 2);
@@ -133,7 +133,6 @@ const App = () => {
           <option value="segunda contagem">Segunda Contagem</option>
           <option value="terceira contagem">Terceira Contagem</option>
         </select>
-        
       </div>
   
       {/* Botão de iniciar e finalizar contagem */}
