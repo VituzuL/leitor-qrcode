@@ -53,31 +53,24 @@ const App = () => {
   const sendDataToAPI = async (data) => {
     console.log("Enviando dados para API:", data); // Adicione este log
     try {
-        const response = await fetch('http://localhost:5000/api/data', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(data),
-        });
+      const response = await fetch('http://localhost:5000/api/data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-        const result = await response.json();
-        console.log("Resultado da API:", result); // Adicione este log
+      const result = await response.json();
+      console.log("Resultado da API:", result); // Adicione este log
     } catch (error) {
-        console.error('Error sending data to API:', error);
+      console.error('Error sending data to API:', error);
     }
-};
-
+  };
 
   const saveData = () => {
     if (data.codigo) {
-      // Enviar dados para a API
-      sendDataToAPI({
-        ...data,
-        tipo: type, // 'embalagem' ou 'insumo'
-        contagem: countingType // 'primeira contagem', 'segunda contagem', etc.
-      });
-
+      // Adicionar dados à lista
       setList([...list, data]);
       setData({ codigo: '', descricao: '', lote: '', quantidade: '' });
       alert("Leitura salva com sucesso!");
@@ -87,23 +80,39 @@ const App = () => {
   };
 
   const exportToTxt = () => {
-    // Formatar os dados para incluir no TXT
-    const listData = list.map(item => `Código: ${item.codigo}, Descrição: ${item.descricao}, Lote: ${item.lote}, Quantidade: ${item.quantidade}`).join('\n');
+    // Enviar os dados armazenados para a API
+    const payload = list.map(item => ({
+      ...item,
+      tipo: type, // 'embalagem' ou 'insumo'
+      contagem: countingType // 'primeira contagem', 'segunda contagem', etc.
+    }));
 
-    // Criar conteúdo do arquivo com o título e os dados
-    const content = `Tipo de Material: ${type}\nContagem: ${countingType}\n\nDados Lidos:\n${listData}`;
-    
-    const blob = new Blob([content], { type: 'text/plain' });
-    const fileName = `${countingType}_${type}.txt`;
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    alert(`Dados exportados para ${fileName} com sucesso!`);
-};
+    // Enviar os dados para a API
+    Promise.all(payload.map(sendDataToAPI))
+      .then(() => {
+        // Após enviar os dados, formatar para incluir no TXT
+        const listData = list.map(item => `Código: ${item.codigo}, Descrição: ${item.descricao}, Lote: ${item.lote}, Quantidade: ${item.quantidade}`).join('\n');
 
+        // Criar conteúdo do arquivo com o título e os dados
+        const content = `Tipo de Material: ${type}\nContagem: ${countingType}\n\nDados Lidos:\n${listData}`;
+        
+        const blob = new Blob([content], { type: 'text/plain' });
+        const fileName = `${countingType}_${type}.txt`;
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        alert(`Dados exportados para ${fileName} com sucesso!`);
+
+        // Limpar a lista após a exportação
+        setList([]);
+      })
+      .catch(error => {
+        console.error('Erro ao enviar dados para a API:', error);
+      });
+  };
 
   const startTimer = () => {
     setStartTime(Date.now());

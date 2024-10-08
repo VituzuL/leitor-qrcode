@@ -1,39 +1,63 @@
 from flask import Flask, request, jsonify
 import pandas as pd
-import os
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)  # Habilita CORS
+
+# Lista global para armazenar os dados temporariamente
+dados_temporarios = []
 
 @app.route('/api/data', methods=['POST'])
-def save_data():
+def save_temp_data():
     data = request.json
     print("Dados recebidos:", data)  # Verifique se os dados estão chegando
-    
-    # Verifique se a chave 'list' está presente nos dados
-    if 'list' not in data:
-        return jsonify({'message': 'Dados inválidos!'}), 400
-    
-    # Extrair a lista de dados recebida
-    items = data['list']
 
-    # Criar um DataFrame a partir da lista de itens
+    # Armazenando os dados temporariamente em uma lista
     try:
-        df = pd.DataFrame(items)
+        tipo_material = data.get('tipo')
+        contagem = data.get('contagem')
 
-        # Verifique se o arquivo Excel já existe
-        excel_file_path = 'Z:\\16 - Inventários Mensais\\API\\inventario.xlsx'
-        if not os.path.exists(excel_file_path):
-            # Se o arquivo não existir, crie um novo DataFrame com cabeçalho
-            df.to_excel(excel_file_path, index=False, header=True)  # Cria um novo arquivo com cabeçalho
-        else:
-            # Se o arquivo já existir, anexe os dados sem sobrescrever o cabeçalho
-            with pd.ExcelWriter(excel_file_path, mode='a', if_sheet_exists='overlay') as writer:
-                df.to_excel(writer, sheet_name='Sheet1', index=False, header=False)  # Anexa os dados
-
-        return jsonify({'message': 'Dados salvos com sucesso!'}), 200
+        # Adicionando os dados à lista global
+        dados_temporarios.append({
+            'Código': data.get('codigo'),
+            'Descrição': data.get('descricao'),
+            'Lote': data.get('lote'),
+            'Quantidade': data.get('quantidade'),
+            'Tipo': tipo_material,
+            'Contagem': contagem
+        })
+        
+        return jsonify({'message': 'Dados temporariamente armazenados!'}), 200
     except Exception as e:
-        print("Erro ao salvar dados:", e)
-        return jsonify({'message': 'Erro ao salvar dados!'}), 500
+        print("Erro ao armazenar dados temporários:", e)
+        return jsonify({'message': 'Erro ao armazenar dados temporários!'}), 500
+
+@app.route('/api/export', methods=['POST'])
+def export_data():
+    try:
+        # Verifica se há dados a serem exportados
+        if not dados_temporarios:
+            return jsonify({'message': 'Não há dados para exportar!'}), 400
+
+        # Transformando a lista de dados em um DataFrame
+        df = pd.DataFrame(dados_temporarios)
+
+        # Caminho do arquivo Excel
+        file_path = 'Z:\\16 - Inventários Mensais\\API\\inventario.xlsx'
+
+        # Criação ou atualização da planilha Excel
+        with pd.ExcelWriter(file_path, mode='a', if_sheet_exists='overlay') as writer:
+            # Adiciona os dados com cabeçalho fixo
+            df.to_excel(writer, sheet_name='Sheet1', index=False, header=not writer.sheets)
+
+        # Limpa os dados temporários após a exportação
+        dados_temporarios.clear()
+
+        return jsonify({'message': 'Dados exportados com sucesso!'}), 200
+    except Exception as e:
+        print("Erro ao exportar dados:", e)
+        return jsonify({'message': 'Erro ao exportar dados!'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
