@@ -51,21 +51,23 @@ const App = () => {
   }, []);
 
   const sendDataToAPI = async (data) => {
+    console.log("Enviando dados para API:", data); // Adicione este log
     try {
-      const response = await fetch('http://localhost:5000/api/data', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-      });
+        const response = await fetch('http://localhost:5000/api/data', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+        });
 
-      const result = await response.json();
-      console.log(result);
+        const result = await response.json();
+        console.log("Resultado da API:", result); // Adicione este log
     } catch (error) {
-      console.error('Error sending data to API:', error);
+        console.error('Error sending data to API:', error);
     }
-  };
+};
+
 
   const saveData = () => {
     if (data.codigo) {
@@ -85,8 +87,13 @@ const App = () => {
   };
 
   const exportToTxt = () => {
-    const jsonData = JSON.stringify({ list, elapsedTime: `${elapsedTime} minutos` }, null, 2);
-    const blob = new Blob([jsonData], { type: 'text/plain' });
+    // Formatar os dados para incluir no TXT
+    const listData = list.map(item => `Código: ${item.codigo}, Descrição: ${item.descricao}, Lote: ${item.lote}, Quantidade: ${item.quantidade}`).join('\n');
+
+    // Criar conteúdo do arquivo com o título e os dados
+    const content = `Tipo de Material: ${type}\nContagem: ${countingType}\n\nDados Lidos:\n${listData}`;
+    
+    const blob = new Blob([content], { type: 'text/plain' });
     const fileName = `${countingType}_${type}.txt`;
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -95,7 +102,8 @@ const App = () => {
     link.click();
     document.body.removeChild(link);
     alert(`Dados exportados para ${fileName} com sucesso!`);
-  };
+};
+
 
   const startTimer = () => {
     setStartTime(Date.now());
