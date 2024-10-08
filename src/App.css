@@ -11,59 +11,63 @@ body {
 .App {
   max-width: 900px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 30px; /* Aumenta o padding do container */
   background-color: #1e1e1e; /* Fundo escuro no container */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  border-radius: 8px;
-  position: relative; /* Necessário para posicionar o logo */
+  border-radius: 10px; /* Aumenta o raio da borda */
 }
 
 /* Título principal */
 h1 {
   text-align: center;
   color: #4CAF50; /* Verde destacado para o título */
-  margin-bottom: 30px;
+  margin-bottom: 40px; /* Aumenta o espaço abaixo do título */
+  font-size: 3rem; /* Aumenta o tamanho do título */
 }
 
 /* Estilização dos botões */
 button {
   background-color: #4CAF50; /* Cor verde para os botões */
   color: white;
-  padding: 10px 20px;
-  margin: 10px 5px;
+  padding: 10px 20px; /* Mantém o padding original dos botões */
+  margin: 10px 5px; /* Mantém o espaço entre os botões */
   border: none;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 1rem; /* Mantém o tamanho da fonte dos botões */
 }
 
 button:hover {
   background-color: #45a049;
 }
 
-/* Estilo dos inputs */
-input[type="text"] {
+/* Estilo dos inputs e dropdowns */
+input[type="text"],
+select {
   width: 100%;
-  padding: 10px;
-  margin: 10px 0;
+  padding: 15px; /* Mantém o padding nos campos de entrada e aumenta */
+  margin: 15px 0; /* Aumenta o espaço entre os campos de entrada */
   box-sizing: border-box;
   background-color: #333; /* Fundo escuro nos campos de entrada */
   color: #e0e0e0; /* Texto claro */
   border: 1px solid #555; /* Bordas escuras */
-  border-radius: 4px;
+  border-radius: 5px; /* Aumenta o raio da borda */
+  font-size: 1.5rem; /* Aumenta o tamanho da fonte dos inputs e dropdowns */
 }
 
 /* Estilo das seções */
 #reader {
-  margin: 20px auto;
+  margin: 30px auto; /* Aumenta o espaço acima e abaixo do scanner */
   width: 100%;
-  max-width: 500px;
+  max-width: 600px; /* Aumenta a largura máxima do scanner */
 }
 
 /* Subtítulos */
 h2 {
   color: #4CAF50; /* Verde para destacar subtítulos */
-  margin-top: 30px;
+  margin-top: 30px; /* Mantém espaço acima do subtítulo */
+  font-size: 2rem; /* Aumenta o tamanho dos subtítulos */
 }
 
 /* Organizando a lista de leituras */
@@ -74,16 +78,17 @@ ul {
 
 ul li {
   background-color: #2e2e2e; /* Fundo escuro para itens da lista */
-  margin: 10px 0;
-  padding: 10px;
+  margin: 15px 0; /* Aumenta o espaço entre os itens da lista */
+  padding: 15px; /* Mantém o padding dos itens da lista */
   border: 1px solid #4CAF50; /* Borda verde */
-  border-radius: 4px;
+  border-radius: 5px; /* Aumenta o raio da borda dos itens da lista */
+  font-size: 1.5rem; /* Aumenta o tamanho da fonte dos itens da lista */
 }
 
 /* Estilização do temporizador */
 #timer {
   margin-top: 20px;
-  font-size: 18px;
+  font-size: 24px; /* Aumenta o tamanho da fonte do timer */
   font-weight: bold;
   color: #e0e0e0; /* Texto claro */
 }
@@ -110,21 +115,28 @@ header {
 /* Responsividade aprimorada */
 @media (max-width: 600px) {
   .App {
-    padding: 15px;
+    padding: 20px; /* Mantém padding adequado para dispositivos móveis */
   }
 
   button {
     width: 100%;
-    margin: 5px 0;
+    margin: 10px 0; /* Ajusta espaço entre botões em mobile */
+    font-size: 1rem; /* Mantém tamanho da fonte do botão */
   }
 
-  input[type="text"] {
-    font-size: 16px;
+  input[type="text"],
+  select {
+    font-size: 1.5rem; /* Mantém tamanho da fonte dos inputs e dropdowns */
   }
+
 
   #reader {
-    width: 100%;
-  }
+  margin: 30px auto; /* Mantém o espaço acima e abaixo do scanner */
+  width: 100%; /* Garante que o contêiner use 100% da largura da viewport */
+  padding: 10px; /* Adiciona um padding lateral para melhor visualização */
+  box-sizing: border-box; /* Garante que o padding seja incluído na largura total */
+}
+
 
   /* Responsividade do logo no topo */
   .gme-logo {
@@ -134,10 +146,23 @@ header {
 
 @media (min-width: 600px) and (max-width: 900px) {
   .App {
-    padding: 20px;
+    padding: 30px; /* Aumenta padding em telas médias */
   }
 
-  input[type="text"] {
-    font-size: 18px;
+  input[type="text"],
+  select {
+    font-size: 1.5rem; /* Mantém tamanho da fonte dos inputs e dropdowns */
+  }
+
+  h1 {
+    font-size: 2.5rem; /* Ajusta tamanho do título em telas médias */
+  }
+
+  h2 {
+    font-size: 1.8rem; /* Ajusta tamanho dos subtítulos em telas médias */
+  }
+
+  button {
+    font-size: 1rem; /* Mantém tamanho da fonte do botão */
   }
 }

@@ -92,23 +92,27 @@ const App = () => {
       <header>
         <img src={gmeLogo} alt="GME Logo" className="gme-logo" />
       </header>
-
+  
       <h1>Inventário Margarina</h1>
-
-      {/* Tipo de Material e Contagem */}
+  
+      {/* Tipo de Material e Contagem utilizando dropdown */}
       <div>
         <h2>Tipo de Material</h2>
-        <button onClick={() => setType('embalagem')}>Embalagem</button>
-        <button onClick={() => setType('insumo')}>Insumo</button>
-        <p>Selecionado: {type}</p>
-
+        <select value={type} onChange={(e) => setType(e.target.value)}>
+          <option value="embalagem">Embalagem</option>
+          <option value="insumo">Insumo</option>
+        </select>
+        
+  
         <h2>Contagem</h2>
-        <button onClick={() => setCountingType('primeira contagem')}>Primeira Contagem</button>
-        <button onClick={() => setCountingType('segunda contagem')}>Segunda Contagem</button>
-        <button onClick={() => setCountingType('terceira contagem')}>Terceira Contagem</button>
-        <p>Contagem selecionada: {countingType}</p>
+        <select value={countingType} onChange={(e) => setCountingType(e.target.value)}>
+          <option value="primeira contagem">Primeira Contagem</option>
+          <option value="segunda contagem">Segunda Contagem</option>
+          <option value="terceira contagem">Terceira Contagem</option>
+        </select>
+        
       </div>
-
+  
       {/* Botão de iniciar e finalizar contagem */}
       <div>
         <h2>Contador</h2>
@@ -116,12 +120,12 @@ const App = () => {
         <button onClick={stopTimer}>Finalizar Contagem</button>
         {elapsedTime !== null && <p>Tempo decorrido: {elapsedTime} minutos</p>}
       </div>
-
+  
       {/* Scanner QR Code */}
-      <div id="reader" style={{ width: '500px' }}>
+      <div id="reader" style={{ width: '100%' }}>
         <img src={scanIcon} alt="Click to Scan" className="scan-icon" />
       </div>
-
+  
       {/* Campos para entrada de dados */}
       <div>
         <h2>Dados Lidos</h2>
@@ -139,10 +143,10 @@ const App = () => {
         <br />
         <button onClick={saveData}>Salvar Leitura</button>
       </div>
-
+  
       {/* Exportar dados para TXT */}
       <button onClick={exportToTxt}>Exportar para TXT</button>
-
+  
       {/* Lista de Leituras */}
       <div>
         <h2>Lista de Leituras</h2>
@@ -156,6 +160,7 @@ const App = () => {
       </div>
     </div>
   );
-};
+}
+  
 
 export default App;
