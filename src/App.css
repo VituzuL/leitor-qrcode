@@ -1,38 +1,143 @@
+/* Estilização geral com tema escuro */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #121212; /* Fundo escuro */
+  color: #e0e0e0; /* Texto claro */
+}
+
+/* Container principal */
 .App {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #1e1e1e; /* Fundo escuro no container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  position: relative; /* Necessário para posicionar o logo */
+}
+
+/* Título principal */
+h1 {
   text-align: center;
+  color: #4CAF50; /* Verde destacado para o título */
+  margin-bottom: 30px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+/* Estilização dos botões */
+button {
+  background-color: #4CAF50; /* Cor verde para os botões */
   color: white;
+  padding: 10px 20px;
+  margin: 10px 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.App-link {
-  color: #61dafb;
+button:hover {
+  background-color: #45a049;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+/* Estilo dos inputs */
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  background-color: #333; /* Fundo escuro nos campos de entrada */
+  color: #e0e0e0; /* Texto claro */
+  border: 1px solid #555; /* Bordas escuras */
+  border-radius: 4px;
+}
+
+/* Estilo das seções */
+#reader {
+  margin: 20px auto;
+  width: 100%;
+  max-width: 500px;
+}
+
+/* Subtítulos */
+h2 {
+  color: #4CAF50; /* Verde para destacar subtítulos */
+  margin-top: 30px;
+}
+
+/* Organizando a lista de leituras */
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+ul li {
+  background-color: #2e2e2e; /* Fundo escuro para itens da lista */
+  margin: 10px 0;
+  padding: 10px;
+  border: 1px solid #4CAF50; /* Borda verde */
+  border-radius: 4px;
+}
+
+/* Estilização do temporizador */
+#timer {
+  margin-top: 20px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #e0e0e0; /* Texto claro */
+}
+
+/* Adicionando o logo no topo lateral direita */
+header {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.gme-logo {
+  width: 80px; /* Tamanho ajustado para visualização em mobile */
+  height: auto;
+}
+
+/* Estilo para o ícone "Click to Scan" */
+.scan-icon {
+  width: 100px; /* Ajuste conforme o tamanho desejado */
+  height: auto;
+  cursor: pointer;
+}
+
+/* Responsividade aprimorada */
+@media (max-width: 600px) {
+  .App {
+    padding: 15px;
   }
-  to {
-    transform: rotate(360deg);
+
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  input[type="text"] {
+    font-size: 16px;
+  }
+
+  #reader {
+    width: 100%;
+  }
+
+  /* Responsividade do logo no topo */
+  .gme-logo {
+    width: 60px; /* Reduzir tamanho do logo em telas menores */
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+  .App {
+    padding: 20px;
+  }
+
+  input[type="text"] {
+    font-size: 18px;
   }
 }

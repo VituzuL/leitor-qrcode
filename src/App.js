@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import { Html5QrcodeScanner } from 'html5-qrcode';
 import './App.css';
+import gmeLogo from './logos/GME-logo.png'; // Caminho correto
+import scanIcon from './logos/click-to-scan.png'; // Caminho correto
 
 const App = () => {
   const [data, setData] = useState({ codigo: '', descricao: '', lote: '', quantidade: '' });
   const [list, setList] = useState([]);
-  const [type, setType] = useState('embalagem'); // Escolha entre embalagem ou insumo
-  const [countingType, setCountingType] = useState('primeira contagem'); // Escolha entre contagem
-  const [startTime, setStartTime] = useState(null); // Guarda o tempo de início
-  const [elapsedTime, setElapsedTime] = useState(null); // Guarda o tempo decorrido
+  const [type, setType] = useState('embalagem');
+  const [countingType, setCountingType] = useState('primeira contagem');
+  const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(null);
 
   useEffect(() => {
     const scanner = new Html5QrcodeScanner("reader", { fps: 10, qrbox: 250 });
 
     const onScanSuccess = (qrData) => {
       try {
-        // Divide os dados em linhas
         const lines = qrData.split('\n');
         const parsedData = {};
 
-        // Itera sobre cada linha e extrai as informações
         lines.forEach(line => {
           const [key, value] = line.split(': ').map(item => item.trim());
           if (key && value) {
@@ -27,7 +27,6 @@ const App = () => {
           }
         });
 
-        // Atualiza o estado com os dados extraídos
         setData({
           codigo: parsedData['Código'] || '',
           descricao: parsedData['Descrição'] || '',
@@ -44,11 +43,10 @@ const App = () => {
       console.warn(`Erro ao ler QR Code: ${error}`);
     };
 
-    // Inicializa o scanner
     scanner.render(onScanSuccess, onScanFailure);
 
     return () => {
-      scanner.clear(); // Limpa o scanner ao desmontar o componente
+      scanner.clear();
     };
   }, []);
 
@@ -90,17 +88,20 @@ const App = () => {
 
   return (
     <div className="App">
-      <h1>QR Code Scanner com HTML5</h1>
-      <div id="reader" style={{ width: '500px' }}></div>
+      {/* Logo no topo lateral direita */}
+      <header>
+        <img src={gmeLogo} alt="GME Logo" className="gme-logo" />
+      </header>
 
+      <h1>QR Code Scanner com HTML5</h1>
+
+      {/* Tipo de Material e Contagem */}
       <div>
         <h2>Tipo de Material</h2>
         <button onClick={() => setType('embalagem')}>Embalagem</button>
         <button onClick={() => setType('insumo')}>Insumo</button>
         <p>Selecionado: {type}</p>
-      </div>
 
-      <div>
         <h2>Contagem</h2>
         <button onClick={() => setCountingType('primeira contagem')}>Primeira Contagem</button>
         <button onClick={() => setCountingType('segunda contagem')}>Segunda Contagem</button>
@@ -108,6 +109,20 @@ const App = () => {
         <p>Contagem selecionada: {countingType}</p>
       </div>
 
+      {/* Botão de iniciar e finalizar contagem */}
+      <div>
+        <h2>Contador</h2>
+        <button onClick={startTimer}>Iniciar Contagem</button>
+        <button onClick={stopTimer}>Finalizar Contagem</button>
+        {elapsedTime !== null && <p>Tempo decorrido: {elapsedTime} minutos</p>}
+      </div>
+
+      {/* Scanner QR Code */}
+      <div id="reader" style={{ width: '500px' }}>
+        <img src={scanIcon} alt="Click to Scan" className="scan-icon" />
+      </div>
+
+      {/* Campos para entrada de dados */}
       <div>
         <h2>Dados Lidos</h2>
         <label>Código: </label>
@@ -125,6 +140,10 @@ const App = () => {
         <button onClick={saveData}>Salvar Leitura</button>
       </div>
 
+      {/* Exportar dados para TXT */}
+      <button onClick={exportToTxt}>Exportar para TXT</button>
+
+      {/* Lista de Leituras */}
       <div>
         <h2>Lista de Leituras</h2>
         <ul>
@@ -135,15 +154,6 @@ const App = () => {
           ))}
         </ul>
       </div>
-
-      <div>
-        <h2>Contador</h2>
-        <button onClick={startTimer}>Iniciar Contagem</button>
-        <button onClick={stopTimer}>Finalizar Contagem</button>
-        {elapsedTime !== null && <p>Tempo decorrido: {elapsedTime} minutos</p>}
-      </div>
-
-      <button onClick={exportToTxt}>Exportar para TXT</button>
     </div>
   );
 };
