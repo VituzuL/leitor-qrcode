@@ -50,15 +50,39 @@ const App = () => {
     };
   }, []);
 
+  const sendDataToAPI = async (data) => {
+    try {
+      const response = await fetch('http://localhost:5000/api/data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      const result = await response.json();
+      console.log(result);
+    } catch (error) {
+      console.error('Error sending data to API:', error);
+    }
+  };
+
   const saveData = () => {
     if (data.codigo) {
+      // Enviar dados para a API
+      sendDataToAPI({
+        ...data,
+        tipo: type, // 'embalagem' ou 'insumo'
+        contagem: countingType // 'primeira contagem', 'segunda contagem', etc.
+      });
+
       setList([...list, data]);
       setData({ codigo: '', descricao: '', lote: '', quantidade: '' });
       alert("Leitura salva com sucesso!");
     } else {
       alert("Por favor, leia um QR Code antes de salvar.");
     }
-  };
+};
 
   const exportToTxt = () => {
     const jsonData = JSON.stringify({ list, elapsedTime: `${elapsedTime} minutos` }, null, 2);
@@ -103,7 +127,6 @@ const App = () => {
           <option value="insumo">Insumo</option>
         </select>
         
-  
         <h2>Contagem</h2>
         <select value={countingType} onChange={(e) => setCountingType(e.target.value)}>
           <option value="primeira contagem">Primeira Contagem</option>
@@ -161,6 +184,5 @@ const App = () => {
     </div>
   );
 }
-  
 
 export default App;
